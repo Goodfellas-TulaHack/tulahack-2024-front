@@ -1,7 +1,7 @@
 import '@mantine/core/styles.css';
 import {createTheme, MantineProvider} from "@mantine/core";
 import {RouterProvider} from "react-router-dom";
-import router from "./router/router.ts";
+import router from "./router/router.tsx";
 
 function App() {
   const theme = createTheme({
