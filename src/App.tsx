@@ -5,7 +5,7 @@ import router from "./router/router.ts";
 
 function App() {
   const theme = createTheme({
-  console.log('test')
+
   });
 
   return (
