@@ -5,7 +5,9 @@ import router from "./router/router.ts";
 
 function App() {
   const theme = createTheme({
-    /** Put your mantine theme override here */
+
+
+
   });
 
   return (
