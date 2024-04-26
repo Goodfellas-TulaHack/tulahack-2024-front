@@ -1,18 +1,16 @@
-import '@mantine/core/styles.css';
-import {createTheme, MantineProvider} from "@mantine/core";
-import {RouterProvider} from "react-router-dom";
-import router from "./router/router.ts";
+import "@mantine/core/styles.css";
+import { createTheme, MantineProvider } from "@mantine/core";
+import { RouterProvider } from "react-router-dom";
+import router from "./router/router.tsx";
 
 function App() {
-  const theme = createTheme({
-
-  });
+  const theme = createTheme({});
 
   return (
     <MantineProvider theme={theme}>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </MantineProvider>
-  )
+  );
 }
 
-export default App
+export default App;
