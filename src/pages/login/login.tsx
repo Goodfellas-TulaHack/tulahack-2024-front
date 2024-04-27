@@ -3,6 +3,7 @@ import {Button, Center, Divider, Input, PasswordInput, Stack, Tabs, Text} from "
 import {IMaskInput} from "react-imask";
 import {IconHome, IconUser} from "@tabler/icons-react";
 import {registerUser} from "@api/user/user.api.ts";
+import logo from "@assets/icons/logo.svg"
 
 
 const Login = () => {
@@ -48,9 +49,7 @@ const Login = () => {
                     <Text ta="center" fw={400} size={"22px"}>
                         {isRegister ? "регистрация" : "войти в"}
                     </Text>
-                    <Text ta="center" fw={700} size={"48px"}>
-                        Гастрохаб
-                    </Text>
+                    <img src={logo}/>
                     <Divider size={"sm"}/>
                     {isRegister &&
                         <Tabs onChange={(e) => setTab(e ? e : '')} value={tab} defaultValue="Пользователь">
