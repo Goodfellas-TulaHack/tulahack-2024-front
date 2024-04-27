@@ -2,7 +2,6 @@
 import {
   ActionIcon,
   Box,
-  Button,
   CloseButton,
   Flex,
   Input,
@@ -13,6 +12,8 @@ import { useState } from "react";
 import { IconSearch, IconUser } from "@tabler/icons-react";
 import { useMobileQuery } from "@/components/media.tsx";
 import Restoran from "@/components/Restoran";
+import logo from "@assets/icons/logo.svg";
+import Header from "@/components/Header";
 
 const Main = () => {
   const mobile = useMobileQuery();
@@ -22,30 +23,7 @@ const Main = () => {
   return (
     <ScrollArea h="100vh">
       <Flex direction="column" gap="md">
-        <Box
-          bg="#A5D8FF"
-          px={50}
-          h={100}
-          style={{
-            boxShadow: "0px 0px 4px 1px #49505726",
-            borderRadius: "0 0 40px 40px",
-          }}
-        >
-          <Flex align="center" h="100%" justify="space-between">
-            <ActionIcon
-              color="#E7F5FF"
-              variant="filled"
-              size="xl"
-              radius="xl"
-              aria-label="Settings"
-            >
-              <IconUser color="#1C7ED6" size={25} />
-            </ActionIcon>
-            <Button color="#E7F5FF" size="md" style={{ color: "#1C7ED6" }}>
-              Авторизация
-            </Button>
-          </Flex>
-        </Box>
+        <Header />
 
         <Input
           px={10}
