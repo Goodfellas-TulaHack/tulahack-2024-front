@@ -7,3 +7,8 @@ export interface IUser {
     middleName: string,
     phone: string
 }
+
+export interface IUserLogin{
+    login: string,
+    password: string,
+}
