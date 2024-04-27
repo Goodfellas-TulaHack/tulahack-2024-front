@@ -2,10 +2,11 @@ import {FormEvent, useState} from "react";
 import {Button, Center, Divider, Input, PasswordInput, Stack, Tabs, Text} from "@mantine/core";
 import {IMaskInput} from "react-imask";
 import {IconHome, IconUser} from "@tabler/icons-react";
-import {loginFn, registerFn, registerMutatuion, registerUser} from "@api/user/user.api.ts";
+import {loginFn, registerFn} from "@api/user/user.api.ts";
 import logo from "@assets/icons/logo.svg"
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {IUser} from "@/utils/types/user/IUser.ts";
+import {IUser, IUserLogin} from "@/utils/types/user/IUser.ts";
+import {useNavigate} from "react-router";
 
 
 const Login = () => {
@@ -20,6 +21,8 @@ const Login = () => {
     const [middleName, setMiddleName] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
 
+    const navigate = useNavigate()
+
     const [tab, setTab] = useState<string>('Пользователь');
 
     const registerMutatuion = useMutation({
@@ -30,14 +33,13 @@ const Login = () => {
     })
 
     const loginQuery = useMutation({
-        mutationFn: (data: IUser) => loginFn(data),
+        mutationFn: (data: IUserLogin) => loginFn(data),
         onSuccess: async () => {
             queryClient.invalidateQueries({ queryKey: ['user'] })
         }
     })
 
     const submitHandlerUserRegister = (e: FormEvent<HTMLFormElement>) => {
-
         e.preventDefault();
 
         const newUser = {
@@ -54,18 +56,27 @@ const Login = () => {
 
         const {error} = registerMutatuion
 
-        if(error){
-
-        }
-        else{
-
-        }
+        navigate("..")
 
     }
 
     const submitHandlerLogin = (e:FormEvent<HTMLFormElement>) => {
 
         e.preventDefault();
+        const newLogin = {
+            login,
+            password
+        }
+        loginQuery.mutate(newLogin)
+
+        const {error} = loginQuery
+
+        if(!error){
+            navigate("..")
+        }
+        else{
+
+        }
 
     }
 
@@ -93,12 +104,15 @@ const Login = () => {
                     }
 
                     <Input value={login} onChange={(e) => setLogin(e.currentTarget.value)} required minLength={4} variant="filled" placeholder="Логин "/>
-                    <Input value={firstName} onChange={(e) => setName(e.currentTarget.value)} required minLength={1} variant="filled" placeholder="Имя"/>
-                    <Input value={lastName} onChange={(e) => setLastName(e.currentTarget.value)} required minLength={1} variant="filled" placeholder="Фамилия"/>
-                    <Input value={middleName} onChange={(e) => setMiddleName(e.currentTarget.value)} minLength={1} variant="filled" placeholder="Отчество"/>
-                    <Input value={phone} onChange={(e) => setPhone(e.currentTarget.value)}
-                        required component={IMaskInput} mask="+7 (000) 000-00-00" type={"phone"}
-                           variant="filled" placeholder="Номер телефона"/>
+                    {isRegister && <>
+                        <Input value={firstName} onChange={(e) => setName(e.currentTarget.value)} required minLength={1} variant="filled" placeholder="Имя"/>
+                        <Input value={lastName} onChange={(e) => setLastName(e.currentTarget.value)} required minLength={1} variant="filled" placeholder="Фамилия"/>
+                        <Input value={middleName} onChange={(e) => setMiddleName(e.currentTarget.value)} minLength={1} variant="filled" placeholder="Отчество"/>
+                        <Input value={phone} onChange={(e) => setPhone(e.currentTarget.value)}                        required component={IMaskInput} mask="+7 (000) 000-00-00" type={"phone"}
+                               variant="filled" placeholder="Номер телефона"/>
+                    </>}
+
+
                     {/*{*/}
                     {/*    isRegister && tab === 'Ресторан' &&*/}
                     {/*    <>*/}

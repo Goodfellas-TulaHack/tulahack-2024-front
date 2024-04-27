@@ -79,7 +79,7 @@ const restrauntEditorSchema = () => {
                 //@ts-ignore
                 onClick={e => e.target === stageRef.current && transformerRef.current.nodes([]) && setIsSelected(false)}
                 ref={stageRef}
-                height={900} width={900} style={{background:"#D0EBFF", width:"900px"}} >
+                height={700} width={900} style={{background:"#D0EBFF", width:"900px"}} >
                 <Layer>
                     {tables.map((table, i) => (
                         table.type === "rect" ?
@@ -127,6 +127,7 @@ const restrauntEditorSchema = () => {
                     <Transformer ref={transformerRef} />
                 </Layer>
             </Stage>
+            <Button>Сохранить</Button>
         </>
 
 
