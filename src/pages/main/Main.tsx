@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { IconSearch, IconUser } from "@tabler/icons-react";
 import { useMobileQuery } from "@/components/media.tsx";
-import Restoran from "./Restoran";
+import Restoran from "@/components/Restoran";
 
 const Main = () => {
   const mobile = useMobileQuery();
