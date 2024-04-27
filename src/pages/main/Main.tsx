@@ -9,13 +9,11 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
-import { useMobileQuery } from "@/components/media.tsx";
 import Restoran from "@/components/Restoran";
 import Header from "@/components/Header";
 import { useGetListRestoran } from "@/api/restoran/getListRestoran";
 
 const Main = () => {
-  const mobile = useMobileQuery();
   const [search, setSearch] = useState("");
 
   const { data, isLoading } = useGetListRestoran({
