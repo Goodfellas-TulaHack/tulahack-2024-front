@@ -1,12 +1,10 @@
 import {IUser} from "../../utils/types/user/IUser.ts";
 import {instance} from "../api.ts";
 
-export const registerUser = async (data: IUser) => {
-    try {
+export const registerFn = async (user: IUser) => {
+    return instance.post('User', user)
+}
 
-        return await instance.post("User", data)
-
-    }
-    catch (e) {
-    }
+export const loginFn = async (user: IUser) => {
+    return instance.post('User', user)
 }
