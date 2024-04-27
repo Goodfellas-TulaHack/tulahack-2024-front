@@ -1,4 +1,4 @@
-import { Box, Flex, BoxProps, Text } from "@mantine/core";
+import { Box, Flex, BoxProps, Text, Anchor } from "@mantine/core";
 
 import { IconCarambola, IconHome } from "@tabler/icons-react";
 
@@ -7,6 +7,7 @@ type RestoranProps = BoxProps & {
   subtitle: string;
   address: string;
   raiting: number;
+  id: string;
 };
 
 const Restoran = ({
@@ -14,44 +15,47 @@ const Restoran = ({
   subtitle,
   raiting,
   address,
+  id,
   ...rest
 }: RestoranProps) => {
+  const test = `/detail/`;
   return (
-    <Flex
-      bg="#D0EBFF"
-      mx={10}
-      px={20}
-      py={10}
-      style={{ borderRadius: "20px" }}
-      align="center"
-      justify="space-between"
-      {...rest}
-    >
+    <Anchor style={{ textDecoration: "none" }} href={`/detail/${id}`} {...rest}>
       <Flex
-        bg="#E7F5FF"
-        w={40}
-        h={40}
-        style={{ borderRadius: "50%" }}
+        bg="#D0EBFF"
+        mx={10}
+        px={20}
+        py={10}
+        style={{ borderRadius: "20px" }}
         align="center"
-        justify={"center"}
+        justify="space-between"
       >
-        <IconHome size={20} color="#1C7ED6" />
-      </Flex>
-      <Box w={170}>
-        <Text size="xl" fw={600}>
-          {title}
-        </Text>
-        <Text size="md">{subtitle}</Text>
-        <Text size="md">{address}</Text>
-      </Box>
+        <Flex
+          bg="#E7F5FF"
+          w={40}
+          h={40}
+          style={{ borderRadius: "50%" }}
+          align="center"
+          justify={"center"}
+        >
+          <IconHome size={20} color="#1C7ED6" />
+        </Flex>
+        <Box w={170}>
+          <Text size="xl" fw={600}>
+            {title}
+          </Text>
+          <Text size="md">{subtitle}</Text>
+          <Text size="md">{address}</Text>
+        </Box>
 
-      <Flex justify="flex-start" align="center" gap="sm">
-        <Text fw={700} style={{ fontSize: 32 }}>
-          {raiting}
-        </Text>
-        <IconCarambola size={30} />
+        <Flex justify="flex-start" align="center" gap="sm">
+          <Text fw={700} style={{ fontSize: 32 }}>
+            {raiting}
+          </Text>
+          <IconCarambola size={30} />
+        </Flex>
       </Flex>
-    </Flex>
+    </Anchor>
   );
 };
 
