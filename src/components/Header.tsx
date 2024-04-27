@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Flex } from "@mantine/core";
+import { ActionIcon, Anchor, Box, Flex } from "@mantine/core";
 
 import { IconUser } from "@tabler/icons-react";
 
@@ -17,15 +17,17 @@ const Header = () => {
     >
       <Flex align="center" h="100%" justify="space-between">
         <img src={logo} />
-        <ActionIcon
-          color="#E7F5FF"
-          variant="filled"
-          size="xl"
-          radius="xl"
-          aria-label="Settings"
-        >
-          <IconUser color="#1C7ED6" size={25} />
-        </ActionIcon>
+        <Anchor href="/login">
+          <ActionIcon
+            color="#E7F5FF"
+            variant="filled"
+            size="xl"
+            radius="xl"
+            aria-label="Settings"
+          >
+            <IconUser color="#1C7ED6" size={25} />
+          </ActionIcon>
+        </Anchor>
       </Flex>
     </Box>
   );

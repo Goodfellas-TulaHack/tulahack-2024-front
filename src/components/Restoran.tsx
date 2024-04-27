@@ -1,8 +1,21 @@
-import { Box, Flex, Text } from "@mantine/core";
+import { Box, Flex, BoxProps, Text } from "@mantine/core";
 
 import { IconCarambola, IconHome } from "@tabler/icons-react";
 
-const Restoran = () => {
+type RestoranProps = BoxProps & {
+  title: string;
+  subtitle: string;
+  address: string;
+  raiting: number;
+};
+
+const Restoran = ({
+  title,
+  subtitle,
+  raiting,
+  address,
+  ...rest
+}: RestoranProps) => {
   return (
     <Flex
       bg="#D0EBFF"
@@ -12,6 +25,7 @@ const Restoran = () => {
       style={{ borderRadius: "20px" }}
       align="center"
       justify="space-between"
+      {...rest}
     >
       <Flex
         bg="#E7F5FF"
@@ -25,14 +39,15 @@ const Restoran = () => {
       </Flex>
       <Box w={170}>
         <Text size="xl" fw={600}>
-          Название ресторана
+          {title}
         </Text>
-        <Text size="md">Короткое описание Короткое описание</Text>
+        <Text size="md">{subtitle}</Text>
+        <Text size="md">{address}</Text>
       </Box>
 
       <Flex justify="flex-start" align="center" gap="sm">
         <Text fw={700} style={{ fontSize: 32 }}>
-          5.0
+          {raiting}
         </Text>
         <IconCarambola size={30} />
       </Flex>
