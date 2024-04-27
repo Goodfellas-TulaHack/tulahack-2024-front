@@ -18,7 +18,6 @@ const Restoran = ({
   id,
   ...rest
 }: RestoranProps) => {
-  const test = `/detail/`;
   return (
     <Anchor style={{ textDecoration: "none" }} href={`/detail/${id}`} {...rest}>
       <Flex

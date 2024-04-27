@@ -1,12 +1,12 @@
-import { Box, Flex } from "@mantine/core";
-
+import { Box, Button, Flex, Loader, ScrollArea, Text } from "@mantine/core";
 import { useParams } from "react-router";
 import { useGetOneRestoran } from "@/api/restoran/getOneRestoran";
-import { Carousel } from "@mantine/carousel";
-import { Image } from "@mantine/core";
-import "@mantine/carousel/styles.css";
-import { useRef } from "react";
-import Autoplay from "embla-carousel-autoplay";
+import DetailCarousel from "@/components/DetailCarousel";
+import { useState } from "react";
+import DetailTab, { Tab } from "./DetailTab";
+import DetaiHeaderlInfo from "./DetaiHeaderlInfo";
+import Description from "./Description";
+import Booking from "./Booking";
 
 const Detail = () => {
   type dataId = {
@@ -14,32 +14,39 @@ const Detail = () => {
   };
   const id = useParams<dataId>();
 
-  const { data } = useGetOneRestoran({ id: id.id ?? "" });
+  const { data, isFetched } = useGetOneRestoran({ id: id.id ?? "" });
+  const [tab, setTab] = useState(Tab.Info);
 
-  const autoplay = useRef(Autoplay({ delay: 3000 }));
+  if (!isFetched) {
+    return (
+      <Flex justify="center" align="center" h="100dvh">
+        <Loader color="cyan" />
+      </Flex>
+    );
+  }
 
   return (
-    <Flex direction="column" gap="sm">
-      <Box>
-        <Carousel
-          withIndicators
-          height={400}
-          slideSize={{ base: "100%", sm: "50%", md: "33.333333%" }}
-          slideGap={{ base: 0, sm: "md" }}
-          loop
-          align="start"
-          plugins={[autoplay.current]}
-          onMouseEnter={autoplay.current.stop}
-          onMouseLeave={autoplay.current.reset}
-        >
-          {data?.photos.map((url) => (
-            <Carousel.Slide key={url}>
-              <Image h={400} src={url} />
-            </Carousel.Slide>
-          ))}
-        </Carousel>
-      </Box>
-    </Flex>
+    <ScrollArea h="100dvh">
+      <Flex direction="column" gap="md">
+        <DetailCarousel photo={data?.photos ?? [""]} />
+        <DetaiHeaderlInfo
+          title={data?.title}
+          kitchen={data?.kitchen}
+          raiting={data?.raiting}
+          address={data?.address}
+        />
+        <DetailTab tab={tab} setTab={setTab} />
+        {tab === Tab.Info ? (
+          <Description
+            description={data?.description}
+            startWorkTime={data?.startWorkTime}
+            endWorkTime={data?.endWorkTime}
+          />
+        ) : (
+          <Booking />
+        )}
+      </Flex>
+    </ScrollArea>
   );
 };
 
