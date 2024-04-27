@@ -3,7 +3,6 @@ import {
   ActionIcon,
   Box,
   Button,
-  Center,
   CloseButton,
   Flex,
   Input,
@@ -13,8 +12,8 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { IconCarambola, IconHome, IconSearch } from "@tabler/icons-react";
-import { useMobileQuery } from "@/media";
-import AccountIcon from "@/icon/AccountIcon";
+import {useMobileQuery} from "@/components/media.tsx";
+import AccountIcon from "@/components/icon/AccountIcon.tsx";
 
 const Main = () => {
   const mobile = useMobileQuery();
