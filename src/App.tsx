@@ -5,7 +5,6 @@ import router from "./router/router.tsx";
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery,
 } from "@tanstack/react-query";
 
 function App() {

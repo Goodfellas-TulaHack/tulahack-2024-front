@@ -2,11 +2,15 @@ import {FormEvent, useState} from "react";
 import {Button, Center, Divider, Input, PasswordInput, Stack, Tabs, Text} from "@mantine/core";
 import {IMaskInput} from "react-imask";
 import {IconHome, IconUser} from "@tabler/icons-react";
-import {registerUser} from "@api/user/user.api.ts";
+import {loginFn, registerFn, registerMutatuion, registerUser} from "@api/user/user.api.ts";
 import logo from "@assets/icons/logo.svg"
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {IUser} from "@/utils/types/user/IUser.ts";
 
 
 const Login = () => {
+    const queryClient = useQueryClient();
+
     const [isRegister, setRegister] = useState<boolean>(false);
 
     const [login, setLogin] = useState<string>('');
@@ -17,6 +21,20 @@ const Login = () => {
     const [phone, setPhone] = useState<string>('');
 
     const [tab, setTab] = useState<string>('Пользователь');
+
+    const registerMutatuion = useMutation({
+        mutationFn: (data: IUser) => registerFn(data),
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ['user'] })
+        }
+    })
+
+    const loginQuery = useMutation({
+        mutationFn: (data: IUser) => loginFn(data),
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ['user'] })
+        }
+    })
 
     const submitHandlerUserRegister = (e: FormEvent<HTMLFormElement>) => {
 
@@ -32,7 +50,17 @@ const Login = () => {
             phone
         }
 
-        registerUser(newUser)
+        registerMutatuion.mutate(newUser)
+
+        const {error} = registerMutatuion
+
+        if(error){
+
+        }
+        else(
+            alert('good')
+        )
+
     }
 
     const submitHandlerLogin = (e:FormEvent<HTMLFormElement>) => {

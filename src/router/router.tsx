@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "../pages/login/login.tsx";
 import Main from "../pages/main/Main.tsx";
+import RestrauntEdit from "@/pages/restraunt-edit/restraunt.edit.tsx";
 import Detail from "@/pages/detail/Detail.tsx";
 
 const router = createBrowserRouter([
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/restraunt-edit",
+    element: <RestrauntEdit />,
   },
 ]);
 
