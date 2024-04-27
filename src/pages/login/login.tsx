@@ -57,9 +57,9 @@ const Login = () => {
         if(error){
 
         }
-        else(
-            alert('good')
-        )
+        else{
+
+        }
 
     }
 
