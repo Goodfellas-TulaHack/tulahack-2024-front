@@ -1,6 +1,5 @@
 import {
   Box,
-  Center,
   CloseButton,
   Flex,
   Input,
@@ -19,12 +18,10 @@ const Main = () => {
   const mobile = useMobileQuery();
   const [search, setSearch] = useState("");
 
-  console.log(mobile);
   const { data, isLoading } = useGetListRestoran({
     title: search,
     kitchen: "",
   });
-  console.log(data);
 
   return (
     <Flex direction="column" gap="md">
@@ -72,24 +69,7 @@ const Main = () => {
                 subtitle={elem.subtitle}
                 raiting={elem.raiting}
                 address={elem.address}
-              />
-            ))}
-            {data?.map((elem) => (
-              <Restoran
-                key={elem.id}
-                title={elem.title}
-                subtitle={elem.subtitle}
-                raiting={elem.raiting}
-                address={elem.address}
-              />
-            ))}
-            {data?.map((elem) => (
-              <Restoran
-                key={elem.id}
-                title={elem.title}
-                subtitle={elem.subtitle}
-                raiting={elem.raiting}
-                address={elem.address}
+                id={elem.id}
               />
             ))}
           </Flex>
