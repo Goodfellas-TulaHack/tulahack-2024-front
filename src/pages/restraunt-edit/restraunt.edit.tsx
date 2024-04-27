@@ -8,14 +8,21 @@ import {useGetListRestoran} from "@api/restoran/getListRestoran.ts";
 import {useGetListAdminRestoran} from "@api/admin/admin.restraunt.api.ts";
 import restrauntEditScheme from "@/components/restrauntEditor/restraunt.edit.scheme.tsx";
 import RestrauntEditScheme from "@/components/restrauntEditor/restraunt.edit.scheme.tsx";
+import {useUserId} from "@/utils/hooks/useUserId.ts";
+import restrauntEditCreate from "@/components/restrauntEditor/restraunt.edit.create.tsx";
 
 
 const restrauntEdit = () => {
     const isMobile = useMobileQuery()
 
     const [isCreate, setIsCreate] = useState<boolean>(false);
+    const userId = useUserId();
 
-    const {data, isLoading} = useGetListAdminRestoran('1');
+    const {data, isLoading} = useGetListAdminRestoran(userId);
+
+    const [restId, setRestId] = useState<string | null>(null)
+
+
 
     const [tab, setTab] = useState<string>('Схема');
 
@@ -29,7 +36,14 @@ const restrauntEdit = () => {
                 </Button>
                 <ScrollArea>
                     <Flex justify={"center"} align={"center"} w={isMobile ? "100%" : "400px"} direction="column" gap={20}>
-
+                        {data?.map((item) => (
+                            <Restoran key={item.id}
+                                      title={item.title}
+                                      subtitle={item.subTitle}
+                                      address={item.address}
+                                      raiting={item.raiting ? item.raiting : 0}
+                                      id={item.id ? item.id : ''}/>
+                        ))}
                     </Flex>
                 </ScrollArea>
             </Flex>
@@ -58,6 +72,9 @@ const restrauntEdit = () => {
                 <Flex mt={20} gap={20} direction="column" align={"center"} justify={"center"}>
                     {tab === "Схема" &&
                         <RestrauntEditScheme/>
+                    }
+                    {tab === "Описание" &&
+                        <RestrauntEditCreate setIsNew={setIsCreate} restId={restId} />
                     }
                 </Flex>
             </Flex>

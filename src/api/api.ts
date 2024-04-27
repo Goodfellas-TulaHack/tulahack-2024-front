@@ -13,6 +13,7 @@ instance.interceptors.request.use(
         // const key = getTokenFromLocalStorage()
         // config.headers['Authorization'] = `Bearer ${key}`
         config.headers['Accept'] = 'application/json'
+        config.withCredentials = true
 
         return config
     },

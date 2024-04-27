@@ -10,6 +10,6 @@ export const loginFn = async (user: IUserLogin) => {
 }
 
 export const authFn = async () => {
-    const {data} = await instance.get<IUser>('User/Auth', {withCredentials: true})
+    const {data} = await instance.get<IUser>('User/Auth')
     return data
 }

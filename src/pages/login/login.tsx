@@ -1,4 +1,4 @@
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {Button, Center, Divider, Input, PasswordInput, Stack, Tabs, Text} from "@mantine/core";
 import {IMaskInput} from "react-imask";
 import {IconHome, IconUser} from "@tabler/icons-react";
@@ -7,6 +7,8 @@ import logo from "@assets/icons/logo.svg"
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {IUser, IUserLogin} from "@/utils/types/user/IUser.ts";
 import {useNavigate} from "react-router";
+import {useAuth} from "@/utils/hooks/useAuth.ts";
+import {useRole} from "@/utils/hooks/useRole.ts";
 
 
 const Login = () => {
@@ -24,6 +26,13 @@ const Login = () => {
     const navigate = useNavigate()
 
     const [tab, setTab] = useState<string>('Пользователь');
+
+    const isAuth = useAuth()
+    const userRole = useRole()
+
+    useEffect(() => {
+        isAuth ? userRole === 1 ? navigate('/restraunt-edit', {replace: true}) : navigate('/profile', {replace: true}) : {}
+    },[])
 
     const registerMutatuion = useMutation({
         mutationFn: (data: IUser) => registerFn(data),

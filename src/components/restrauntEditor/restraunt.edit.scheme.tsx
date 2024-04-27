@@ -2,12 +2,12 @@ import {Layer, Stage, Circle, Rect, Transformer} from "react-konva";
 import {Button, Flex, Input, Select} from "@mantine/core";
 import {useRef, useState} from "react";
 import Konva from "konva";
-import {Text} from "react-konva"
 import {IconTrash} from "@tabler/icons-react";
 
 
 
 const restrauntEditorSchema = () => {
+
 
     const [tableShape, setTableShape] = useState<string>('Квадратный стол')
 

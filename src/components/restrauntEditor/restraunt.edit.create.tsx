@@ -4,9 +4,10 @@ import {TimeInput} from "@mantine/dates";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 import {postNewRest} from "@api/admin/admin.restraunt.api.ts";
+import {useUserId} from "@/utils/hooks/useUserId.ts";
 
 
-const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>}) => {
+const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>, restId?: string | null}) => {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [shortDescription, setShortDescription] = useState<string>("");
@@ -16,6 +17,8 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
     const [kitchen, setKitchen] = useState<string[]>([]);
 
     const queryClient = useQueryClient();
+
+    const userId = useUserId()
 
     const addRestMutation = useMutation({
         mutationFn: (data: IRestData) => postNewRest(data),
@@ -33,6 +36,7 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
             startWorkTime: startTime,
             endWorkTime: endTime,
             kitchen: kitchen,
+            userId: userId
 
         }
 
@@ -96,7 +100,7 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
                 </Flex>
                 <Flex direction={"column"} gap={20}>
                     <Button onClick={() => saveHandler()} fullWidth>Сохранить</Button>
-                    <Button onClick={() => props.setIsNew(false)} color="gray" fullWidth>Отменить</Button>
+                    {!props.restId && <Button onClick={() => props.setIsNew(false)} color="gray" fullWidth>Отменить</Button>}
                 </Flex>
                 <MultiSelect
                     value={kitchen}
