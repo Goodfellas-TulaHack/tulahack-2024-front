@@ -8,12 +8,11 @@ import {
   Input,
   ScrollArea,
   Select,
-  Text,
 } from "@mantine/core";
 import { useState } from "react";
-import { IconCarambola, IconHome, IconSearch } from "@tabler/icons-react";
-import {useMobileQuery} from "@/components/media.tsx";
-import AccountIcon from "@/components/icon/AccountIcon.tsx";
+import { IconSearch, IconUser } from "@tabler/icons-react";
+import { useMobileQuery } from "@/components/media.tsx";
+import Restoran from "./Restoran";
 
 const Main = () => {
   const mobile = useMobileQuery();
@@ -22,7 +21,7 @@ const Main = () => {
   console.log(mobile);
   return (
     <ScrollArea h="100vh">
-      <Flex direction="column" gap="xl">
+      <Flex direction="column" gap="md">
         <Box
           bg="#A5D8FF"
           px={50}
@@ -40,7 +39,7 @@ const Main = () => {
               radius="xl"
               aria-label="Settings"
             >
-              <AccountIcon color="#1C7ED6" size={20} />
+              <IconUser color="#1C7ED6" size={25} />
             </ActionIcon>
             <Button color="#E7F5FF" size="md" style={{ color: "#1C7ED6" }}>
               Авторизация
@@ -48,56 +47,42 @@ const Main = () => {
           </Flex>
         </Box>
 
-        <Flex direction="row" justify="space-between" px={10} gap={20}>
-          <Input
-            size="md"
-            placeholder="Поиск"
-            value={search}
-            onChange={(event) => setSearch(event.currentTarget.value)}
-            rightSectionPointerEvents="all"
-            leftSection={<IconSearch size={16} />}
-            rightSection={
-              <CloseButton
-                aria-label="Clear input"
-                onClick={() => setSearch("")}
-                style={{ display: search ? undefined : "none" }}
-              />
-            }
-          />
-          <Select
-            size="md"
-            placeholder="Фильтр"
-            data={["React", "Angular", "Vue", "Svelte"]}
-          />
-        </Flex>
+        <Input
+          px={10}
+          size="md"
+          placeholder="Поиск"
+          value={search}
+          onChange={(event) => setSearch(event.currentTarget.value)}
+          rightSectionPointerEvents="all"
+          leftSection={
+            <Box ml={10}>
+              <IconSearch size={16} />
+            </Box>
+          }
+          rightSection={
+            <CloseButton
+              aria-label="Clear input"
+              onClick={() => setSearch("")}
+              style={{ display: search ? undefined : "none" }}
+            />
+          }
+        />
 
-        <Flex
-          bg="#D0EBFF"
-          h={80}
-          px={20}
-          style={{ borderRadius: "20px" }}
-          align="center"
-          justify="space-between"
-        >
-          <Flex
-            bg="#E7F5FF"
-            w={40}
-            h={40}
-            style={{ borderRadius: "50%" }}
-            align="center"
-            justify={"center"}
-          >
-            <IconHome size={20} color="#1C7ED6" />
-          </Flex>
-          <Box>
-            <Text size="xl">Название ресторана</Text>
-            <Text size="md">Короткое описание</Text>
-          </Box>
-          <Text fw={700} style={{ fontSize: 32 }}>
-            5.0
-          </Text>
-          <IconCarambola size={30} />
-        </Flex>
+        <Select
+          px={10}
+          size="md"
+          placeholder="Выберите кухню"
+          data={["Суши", "Пицца", "Бургеры"]}
+        />
+
+        <Restoran />
+        <Restoran />
+        <Restoran />
+        <Restoran />
+        <Restoran />
+        <Restoran />
+        <Restoran />
+        <Restoran />
       </Flex>
     </ScrollArea>
   );
