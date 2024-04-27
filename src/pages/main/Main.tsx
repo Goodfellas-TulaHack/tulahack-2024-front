@@ -11,8 +11,8 @@ import {
   Select,
   Text,
 } from "@mantine/core";
-import { useMobileQuery } from "../components/media";
-import AccountIcon from "../components/icon/AccountIcon";
+import { useMobileQuery } from "../../components/media";
+import AccountIcon from "../../components/icon/AccountIcon";
 import { useState } from "react";
 import { IconCarambola, IconHome, IconSearch } from "@tabler/icons-react";
 
