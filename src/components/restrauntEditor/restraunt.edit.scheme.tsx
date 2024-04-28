@@ -1,11 +1,10 @@
 import {Layer, Stage, Circle, Rect, Transformer} from "react-konva";
 import {Button, Flex, Input, Select} from "@mantine/core";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Konva from "konva";
 import {IconTrash} from "@tabler/icons-react";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {postNewRest} from "@api/admin/admin.restraunt.api.ts";
-import {postNewTableFn} from "@api/admin/admin.restraunt.scheme.save.ts";
+import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
+import {getAllTableFn, postNewTableFn, putNewTableFn} from "@api/admin/admin.restraunt.scheme.save.ts";
 
 
 
@@ -24,12 +23,29 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
 
     const queryClient = useQueryClient();
 
+    const {data} = useQuery({
+        queryFn: () => getAllTableFn(props.schemeId),
+        queryKey: ['tables']
+
+    })
+
     const addTableMutatuion = useMutation({
         mutationFn: (data: ITable) => postNewTableFn(data),
         onSuccess: async () => {
-        queryClient.invalidateQueries({ queryKey: ['getListRestraunAdmin'] })
+        queryClient.invalidateQueries({ queryKey: ['tables'] })
     }}
     )
+
+    const putTableMutatuion = useMutation({
+        mutationFn: (data: ITable) => putNewTableFn(data),
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ['tables'] })
+        }}
+    )
+
+    useEffect(() => {
+        setTable(data?.data ? data?.data : [])
+    }, [data]);
 
 
     const addTable = () => {
@@ -44,15 +60,16 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
             fill: "#A5D8FF",
             scaleX: 1,
             scaleY: 1,
-            rotate: 0,
+            rotation: 0,
             numberOfPeople: 0,
             radius: 25
         }
         addTableMutatuion.mutate(newTable)
-        setTable((prev) => [...prev, newTable]);
+        // setTable((prev) => [...prev, newTable]);
     }
 
     const saveTable = (table: ITable, i:number, num?: number) => {
+        console.log(table)
         const newTable: ITable = {
             id: tables[i].id,
             schemeId: props.schemeId,
@@ -62,19 +79,16 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
             height: table.height,
             scaleX: table.scaleX,
             scaleY: table.scaleY,
-            rotate: table.rotate,
+            rotation: table.rotation,
             fill: "#A5D8FF",
             type: tables[i].type,
             numberOfPeople: num ? num : tables[i].numberOfPeople,
             radius: 25
         };
-        const newTables: ITable[] = [...tables.slice(0,i),newTable,...tables.slice(i+1, tables.length)];
-        setTable(newTables);
-    }
-
-
-    const saveTablesHandler = () => {
-
+        console.log(newTable);
+        putTableMutatuion.mutate(newTable)
+        // const newTables: ITable[] = [...tables.slice(0,i),newTable,...tables.slice(i+1, tables.length)];
+        // setTable(newTables);
     }
 
     const deleteHandler = () => {
@@ -111,7 +125,7 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
                                 height={table.height}
                                 scaleX={table.scaleX}
                                 scaleY={table.scaleY}
-                                rotation={table.rotate}
+                                rotation={table.rotation}
                                 fill={table.fill}
                                 key={table.id}
                                 draggable
