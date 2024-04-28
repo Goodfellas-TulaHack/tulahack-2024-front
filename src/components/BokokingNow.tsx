@@ -45,9 +45,9 @@ const BokokingNow = ({ ...rest }: BokokingNowProps) => {
         onClick={() =>
           postNotification({
             userId: userId,
-            restaurantId: "8cb87000-76aa-41d3-88e4-98ab967f8c8f",
-            type: "1",
-            description: "ОФИЙИИАНТ",
+            restaurantId: booking.restaurantId,
+            type: "Позвать официанта",
+            description: "Позвать официанта",
           })
         }
       >
@@ -55,7 +55,18 @@ const BokokingNow = ({ ...rest }: BokokingNowProps) => {
       </Button>
       <Flex gap="sm" mt="sm">
         <ModalMenuButton />
-        <Button fullWidth h={30}>
+        <Button
+          fullWidth
+          h={30}
+          onClick={() =>
+            postNotification({
+              userId: userId,
+              restaurantId: booking.restaurantId,
+              type: "Принести счет",
+              description: "Принести счет",
+            })
+          }
+        >
           Счет
         </Button>
       </Flex>

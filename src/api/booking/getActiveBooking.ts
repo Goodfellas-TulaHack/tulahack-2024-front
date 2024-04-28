@@ -14,7 +14,7 @@ export const getBookingseActive = async ({
 
 export const uBookingseActive = ({ userId }: BookingseActive) => {
   return useQuery({
-    queryKey: ["getNotification", userId],
+    queryKey: ["getBookingseActive", userId],
     queryFn: () => getBookingseActive({ userId }),
   });
 };

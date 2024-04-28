@@ -28,8 +28,6 @@ const Main = () => {
         : [],
   });
 
-  console.log(kitchenResp?.find((elem) => elem.name == filter)?.id);
-
   return (
     <Flex direction="column" gap="md">
       <Header />

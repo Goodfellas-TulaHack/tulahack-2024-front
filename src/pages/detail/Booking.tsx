@@ -24,8 +24,6 @@ const Booking = ({ schemeId }: BookingProps) => {
     setTable(data?.data ? data?.data : []);
   }, [data]);
 
-  console.log(tables);
-
   return (
     <Flex px={20} gap="sm" direction="column">
       <DateInput value={value} onChange={setValue} label="Выберите дату" />
