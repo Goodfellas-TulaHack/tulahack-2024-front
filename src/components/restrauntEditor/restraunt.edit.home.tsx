@@ -1,14 +1,41 @@
-import {Alert, Flex, ScrollArea} from "@mantine/core";
+import { useNotification } from "@/api/notification/getNotification";
+import { Alert, Box, Flex, ScrollArea, Text } from "@mantine/core";
 
-const RestrauntEditHome = () => {
-
-    return(
-        <ScrollArea>
-            <Alert variant="light" color="blue" title="Alert title" icon={}>
-
-            </Alert>
+const RestrauntEditHome = ({ restId }: { restId: string }) => {
+  const { data } = useNotification({ restaurantId: restId });
+  console.log(data);
+  return (
+    <Flex gap={50}>
+      <Box>
+        <Text size="xl">Текущие бронирования</Text>
+        <ScrollArea h="80vh" mt={20}>
+          <Flex gap={10} direction="column">
+            {data?.map((elem) => (
+              <Alert
+                variant="light"
+                color="blue"
+                title={`${elem.description} ${elem.user.firstName} ${elem.user.lastName}`}
+              ></Alert>
+            ))}
+          </Flex>
         </ScrollArea>
-    )
-}
+      </Box>
+      <Box>
+        <Text size="xl">Текущие уведомления</Text>
+        <ScrollArea h="80vh" mt={20}>
+          <Flex gap={10} direction="column">
+            {data?.map((elem) => (
+              <Alert
+                variant="light"
+                color="blue"
+                title={`${elem.description} ${elem.user.firstName} ${elem.user.lastName}`}
+              ></Alert>
+            ))}
+          </Flex>
+        </ScrollArea>
+      </Box>
+    </Flex>
+  );
+};
 
 export default RestrauntEditHome;
