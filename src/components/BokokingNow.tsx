@@ -2,11 +2,15 @@ import { Box, Flex, BoxProps, Text, Button } from "@mantine/core";
 
 import { IconCarambola, IconHome } from "@tabler/icons-react";
 import ModalMenuButton from "./ModalMenuButton";
-import { usePutNotification } from "@/api/notification/putNotification";
+import { postNotification } from "@/api/notification/postNotification";
+import { useUserId } from "@/utils/hooks/useUserId";
+import { uBookingseActive } from "@/api/booking/getActiveBooking";
 
 type BokokingNowProps = BoxProps & {};
 
 const BokokingNow = ({ ...rest }: BokokingNowProps) => {
+  const userId = useUserId();
+  const { data: booking } = uBookingseActive({ userId: userId });
   return (
     <Box bg="#D0EBFF" mx={10} px={20} py={10} style={{ borderRadius: "20px" }}>
       <Flex align="center" justify="space-between" {...rest}>
@@ -34,12 +38,35 @@ const BokokingNow = ({ ...rest }: BokokingNowProps) => {
           <IconCarambola size={30} />
         </Flex>
       </Flex>
-      <Button fullWidth mt="sm" h={30}>
+      <Button
+        fullWidth
+        mt="sm"
+        h={30}
+        onClick={() =>
+          postNotification({
+            userId: userId,
+            restaurantId: booking.restaurantId,
+            type: "Позвать официанта",
+            description: "Позвать официанта",
+          })
+        }
+      >
         Позвать официанта
       </Button>
       <Flex gap="sm" mt="sm">
         <ModalMenuButton />
-        <Button fullWidth h={30}>
+        <Button
+          fullWidth
+          h={30}
+          onClick={() =>
+            postNotification({
+              userId: userId,
+              restaurantId: booking.restaurantId,
+              type: "Принести счет",
+              description: "Принести счет",
+            })
+          }
+        >
           Счет
         </Button>
       </Flex>

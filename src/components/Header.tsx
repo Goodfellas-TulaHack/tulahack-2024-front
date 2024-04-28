@@ -9,12 +9,16 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "@/utils/hooks/use-user";
 import BokokingNow from "./BokokingNow";
+import { uBookingseActive } from "@/api/booking/getActiveBooking";
+import { useUserId } from "@/utils/hooks/useUserId";
 
 const Header = () => {
   const isAuth = useAuth();
   const userRole = useRole();
   const userInfo = useUser();
   const [href, setHref] = useState<string>("");
+  const userId = useUserId();
+  const { data: booking } = uBookingseActive({ userId: userId });
 
   useEffect(() => {
     if (isAuth) {
@@ -71,7 +75,7 @@ const Header = () => {
           </Flex>
         )}
       </Box>
-      <BokokingNow />
+      {booking ? <BokokingNow /> : null}
     </>
   );
 };

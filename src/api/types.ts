@@ -33,3 +33,12 @@ export type FilterRestoranResponse = {
   endWorkTime: string;
   schemeId: string;
 };
+export type User = {
+  firstName: string;
+  lastName: string;
+};
+
+export type NotificationResponse = {
+  description: string;
+  user: User;
+};
