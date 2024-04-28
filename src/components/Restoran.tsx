@@ -36,28 +36,30 @@ const Restoran = ({
           py={10}
           style={{ borderRadius: "20px" }}
           align="center"
-          onClick={() => onClick?.(id)}
           justify="space-between"
+          gap={10}
         >
-          <Flex
-            bg="#E7F5FF"
-            w={40}
-            h={40}
-            style={{ borderRadius: "50%" }}
-            align="center"
-            justify={"center"}
-          >
-            <IconHome size={20} color="#1C7ED6" />
+          <Flex gap={20} align="center">
+            <Flex
+              bg="#E7F5FF"
+              w={40}
+              h={40}
+              style={{ borderRadius: "50%" }}
+              align="center"
+              justify={"center"}
+            >
+              <IconHome size={20} color="#1C7ED6" />
+            </Flex>
+            <Box w={170}>
+              <Text size="xl" fw={600}>
+                {title}
+              </Text>
+              <Text size="md">{subtitle}</Text>
+              <Text size="md">{address}</Text>
+            </Box>
           </Flex>
-          <Box w={170}>
-            <Text size="xl" fw={600}>
-              {title}
-            </Text>
-            <Text size="md">{subtitle}</Text>
-            <Text size="md">{address}</Text>
-          </Box>
 
-          <Flex justify="flex-start" align="center" gap="sm">
+          <Flex justify="flex-end" align="center" gap="sm">
             <Text fw={700} style={{ fontSize: 32 }}>
               {raiting}
             </Text>
