@@ -10,6 +10,7 @@ import restrauntEditScheme from "@/components/restrauntEditor/restraunt.edit.sch
 import RestrauntEditScheme from "@/components/restrauntEditor/restraunt.edit.scheme.tsx";
 import {useUserId} from "@/utils/hooks/useUserId.ts";
 import restrauntEditCreate from "@/components/restrauntEditor/restraunt.edit.create.tsx";
+import RestrauntEditPhotos from "@/components/restrauntEditor/restraunt.edit.photos.tsx";
 
 
 const restrauntEdit = () => {
@@ -21,8 +22,6 @@ const restrauntEdit = () => {
     const {data, isLoading} = useGetListAdminRestoran(userId);
 
     const [restId, setRestId] = useState<string | null>(null)
-
-
 
     const [tab, setTab] = useState<string>('Схема');
 
@@ -36,10 +35,10 @@ const restrauntEdit = () => {
                 </Button>
                 <ScrollArea>
                     <Flex justify={"center"} align={"center"} w={isMobile ? "100%" : "400px"} direction="column" gap={20}>
-                        {data?.map((item) => (
+                        {data?.map((item: IRestData) => (
                             <Restoran key={item.id}
                                       title={item.title}
-                                      subtitle={item.subTitle}
+                                      subtitle={item.subtitle}
                                       address={item.address}
                                       raiting={item.raiting ? item.raiting : 0}
                                       id={item.id ? item.id : ''}/>
@@ -50,33 +49,43 @@ const restrauntEdit = () => {
             {isCreate ? <RestrauntEditCreate setIsNew={setIsCreate}/> :
 
             <Flex direction={"column"} p={30}>
-            <Tabs value={tab} onChange={(e) => setTab(e ? e : '')} w={"calc(100dvw - 550px)"} defaultValue="Схема">
-                    <Tabs.List grow>
-                        <Tabs.Tab value="Домашняя страница" >
-                            Домашняя страница
-                        </Tabs.Tab>
-                        <Tabs.Tab value="Описание" >
-                            Описание
-                        </Tabs.Tab>
-                        <Tabs.Tab value="Галлерея" >
-                            Галлерея
-                        </Tabs.Tab>
-                        <Tabs.Tab value="Меню" >
-                            Меню
-                        </Tabs.Tab>
-                        <Tabs.Tab value="Схема" >
-                            Схема
-                        </Tabs.Tab>
-                    </Tabs.List>
-                </Tabs>
-                <Flex mt={20} gap={20} direction="column" align={"center"} justify={"center"}>
-                    {tab === "Схема" &&
-                        <RestrauntEditScheme/>
-                    }
-                    {tab === "Описание" &&
-                        <RestrauntEditCreate setIsNew={setIsCreate} restId={restId} />
-                    }
-                </Flex>
+                {restId &&
+                <>
+                    <Tabs value={tab} onChange={(e) => setTab(e ? e : '')} w={"calc(100dvw - 550px)"} defaultValue="Схема">
+                        <Tabs.List grow>
+                            <Tabs.Tab value="Домашняя страница" >
+                                Домашняя страница
+                            </Tabs.Tab>
+                            <Tabs.Tab value="Описание" >
+                                Описание
+                            </Tabs.Tab>
+                            <Tabs.Tab value="Галлерея" >
+                                Галлерея
+                            </Tabs.Tab>
+                            <Tabs.Tab value="Меню" >
+                                Меню
+                            </Tabs.Tab>
+                            <Tabs.Tab value="Схема" >
+                                Схема
+                            </Tabs.Tab>
+                        </Tabs.List>
+                    </Tabs>
+                    <Flex mt={20} gap={20} direction="column" align={"center"} justify={"center"}>
+                        {tab === "Схема" &&
+                            <RestrauntEditScheme/>
+                        }
+                        {tab === "Описание" &&
+                            <RestrauntEditCreate setIsNew={setIsCreate} restId={restId} />
+                        }
+                        {tab === 'Галлерея' &&
+                            <RestrauntEditPhotos />
+
+                        }
+                    </Flex>
+                </>
+                }
+
+
             </Flex>
             }
 

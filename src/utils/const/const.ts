@@ -1,1 +1,1 @@
-export const API_KEY = "http://192.168.1.98:5128/"
+export const API_KEY = "https://192.168.1.98:7266/"

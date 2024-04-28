@@ -1,7 +1,7 @@
 interface IRestData {
     id?: string,
     title: string,
-    subTitle: string,
+    subtitle: string,
     description: string,
     userId: string,
     address: string,
@@ -11,5 +11,6 @@ interface IRestData {
     raiting?: number,
     startWorkTime: string,
     endWorkTime: string,
-    schemeId?: string
+    schemeId?: string,
+    logo?: string
 }

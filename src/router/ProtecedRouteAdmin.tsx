@@ -6,9 +6,10 @@ type Props = {
 };
 
 const ProtecedRoutesAdmin: React.FC<Props> = ({children}) => {
-    const isAdmin = useRole();
+    const role = useRole()
 
-    return isAdmin === 1 ? children : <Navigate to="/" replace={true}/>
+
+    return role ? children : <Navigate to="/" replace={true}/>
 }
 
 export default ProtecedRoutesAdmin;

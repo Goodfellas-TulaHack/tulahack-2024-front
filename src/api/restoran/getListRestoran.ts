@@ -4,23 +4,22 @@ import { FilterRestoranResponse } from "../types";
 
 export type FilterRestoran = {
   title: string;
-  kitchen: string;
+  kitchenIds: string[];
 };
 
 export const getListRestoran = async ({
-  title,
-  kitchen,
+  title,kitchenIds,
 }: FilterRestoran): Promise<FilterRestoranResponse[]> => {
   const { data } = await instance.post(`/Restaurant/Search`, {
     title,
-    kitchen,
+    kitchenIds,
   });
   return data;
 };
 
-export const useGetListRestoran = ({ title, kitchen }: FilterRestoran) => {
+export const useGetListRestoran = ({ title, kitchenIds }: FilterRestoran) => {
   return useQuery({
-    queryKey: ["getListRestoran", title, kitchen],
-    queryFn: () => getListRestoran({ title, kitchen }),
+    queryKey: ["getListRestoran", title, kitchenIds],
+    queryFn: () => getListRestoran({ title, kitchenIds }),
   });
 };

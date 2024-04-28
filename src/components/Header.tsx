@@ -1,15 +1,32 @@
-import { ActionIcon, Anchor, Box, Flex } from "@mantine/core";
+import { ActionIcon, Box, Flex } from "@mantine/core";
 
 import { IconUser } from "@tabler/icons-react";
 
 import logo from "@assets/icons/logo.svg";
 import {useAuth} from "@/utils/hooks/useAuth.ts";
 import {useRole} from "@/utils/hooks/useRole.ts";
+import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 
 const Header = () => {
 
   const isAuth = useAuth()
   const userRole = useRole()
+  const [href, setHref] = useState<string>('');
+
+  useEffect(() => {
+    if(isAuth){
+      if(userRole){
+        setHref('/restraunt-edit')
+      }
+      else{
+        setHref('/profile')
+      }
+    }
+    else{
+      setHref('/login')
+    }
+  },[isAuth,userRole])
 
   return (
     <Box
@@ -23,7 +40,7 @@ const Header = () => {
     >
       <Flex align="center" h="100%" justify="space-between">
         <img src={logo} />
-        <Anchor href={isAuth ? userRole === 1 ? '/restraunt-edit' : '/profile' : '/login'}>
+        <Link to={href}>
           <ActionIcon
             color="#E7F5FF"
             variant="filled"
@@ -33,7 +50,7 @@ const Header = () => {
           >
             <IconUser color="#1C7ED6" size={25} />
           </ActionIcon>
-        </Anchor>
+        </Link>
       </Flex>
     </Box>
   );

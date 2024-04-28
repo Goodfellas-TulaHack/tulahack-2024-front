@@ -6,14 +6,13 @@ export const getListAdminRest = async (userId: string) => {
     return data;
 };
 
-export const useGetListAdminRestoran = (userId: string) => {
+export const useGetListAdminRestoran = async (userId: string) => {
     return useQuery({
         queryKey: ["getListRestraunAdmin", userId],
         queryFn: () => getListAdminRest(userId),
     });
 };
 
-export const postNewRest = async (dataRest: IRestData) => {
-    const {data} = await instance.post(`/Restaurant`, {dataRest})
-    return data
+export const postNewRest = async (data: IRestData) => {
+    await instance.post(`/Restaurant`, data)
 };

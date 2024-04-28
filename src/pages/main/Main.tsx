@@ -18,7 +18,7 @@ const Main = () => {
 
   const { data, isLoading } = useGetListRestoran({
     title: search,
-    kitchen: "",
+      kitchenIds: [],
   });
 
   return (

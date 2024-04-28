@@ -5,10 +5,10 @@ type Props = {
     children: JSX.Element;
 };
 
-const ProtecedRoutesAdmin: React.FC<Props> = ({children}) => {
+const ProtecedRoutes: React.FC<Props> = ({children}) => {
     const isAuth = useAuth();
 
     return isAuth ? children : <Navigate to="/login" replace={true}/>
 }
 
-export default ProtecedRoutesAdmin;
+export default ProtecedRoutes;

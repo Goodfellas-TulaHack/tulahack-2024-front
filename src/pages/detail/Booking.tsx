@@ -10,7 +10,6 @@ const Booking = ({}: BookingProps) => {
   const refEnd = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState<Date | null>(null);
 
-  console.log(value);
 
   return (
     <Flex px={20} gap="sm" direction="column">

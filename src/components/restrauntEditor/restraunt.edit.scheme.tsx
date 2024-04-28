@@ -3,10 +3,12 @@ import {Button, Flex, Input, Select} from "@mantine/core";
 import {useRef, useState} from "react";
 import Konva from "konva";
 import {IconTrash} from "@tabler/icons-react";
+import {useMutation} from "@tanstack/react-query";
+import {postNewTableFn} from "@api/admin/admin.restraunt.scheme.save.ts";
 
 
 
-const restrauntEditorSchema = () => {
+const restrauntEditorSchema = (props: {schemeId: string}) => {
 
 
     const [tableShape, setTableShape] = useState<string>('Квадратный стол')
@@ -21,6 +23,7 @@ const restrauntEditorSchema = () => {
     const addTable = () => {
         const newTable: ITable = {
             id: crypto.randomUUID(),
+            schemeId: props.schemeId,
             x: 50,
             y: 50,
             width: 50,
@@ -40,6 +43,7 @@ const restrauntEditorSchema = () => {
     const saveTable = (table: ITable, i:number, num?: number) => {
         const newTable: ITable = {
             id: tables[i].id,
+            schemeId: props.schemeId,
             x: table.x,
             y: table.y,
             width: table.width,
@@ -54,6 +58,11 @@ const restrauntEditorSchema = () => {
         };
         const newTables: ITable[] = [...tables.slice(0,i),newTable,...tables.slice(i+1, tables.length)];
         setTable(newTables);
+    }
+
+
+    const saveTablesHandler = () => {
+
     }
 
     const deleteHandler = () => {
@@ -127,7 +136,7 @@ const restrauntEditorSchema = () => {
                     <Transformer ref={transformerRef} />
                 </Layer>
             </Stage>
-            <Button>Сохранить</Button>
+            <Button onClick={() => saveTablesHandler()}>Сохранить</Button>
         </>
 
 

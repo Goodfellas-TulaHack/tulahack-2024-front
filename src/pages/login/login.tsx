@@ -31,7 +31,7 @@ const Login = () => {
     const userRole = useRole()
 
     useEffect(() => {
-        isAuth ? userRole === 1 ? navigate('/restraunt-edit', {replace: true}) : navigate('/profile', {replace: true}) : {}
+        isAuth ? (userRole === 1 ? navigate('/restraunt-edit', {replace: true}) : navigate('/profile', {replace: true})) : {}
     },[])
 
     const registerMutatuion = useMutation({

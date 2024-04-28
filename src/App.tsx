@@ -1,5 +1,5 @@
 import "@mantine/core/styles.css";
-import { createTheme, MantineProvider } from "@mantine/core";
+import {createTheme, Loader, MantineProvider} from "@mantine/core";
 import { RouterProvider } from "react-router-dom";
 import router from "./router/router.tsx";
 import {
@@ -21,19 +21,22 @@ function App() {
   const auth = useStore((state) => state.logining)
     const logout = useStore((state) => state.logout)
 
+    const {data, isLoading} = checkAuth
+
   useEffect(() => {
-      if(checkAuth.data){
-          auth(checkAuth.data)
+
+      if(data){
+          auth(data)
       }
       else{
           logout()
       }
-  })
+  },[isLoading])
 
   return (
 
       <MantineProvider theme={theme}>
-        <RouterProvider router={router} />
+          <RouterProvider router={router} />
       </MantineProvider>
   );
 }
