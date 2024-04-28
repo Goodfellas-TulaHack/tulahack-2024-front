@@ -1,6 +1,6 @@
-import { Box, BoxProps, Center, Flex, Text } from "@mantine/core";
+import { BoxProps, Flex } from "@mantine/core";
 import { useRef, useState } from "react";
-import { DateInput, DatePicker, TimeInput } from "@mantine/dates";
+import { DateInput, TimeInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 
 type BookingProps = BoxProps & {};

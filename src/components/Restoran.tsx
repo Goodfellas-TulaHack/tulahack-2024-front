@@ -19,7 +19,11 @@ const Restoran = ({
   ...rest
 }: RestoranProps) => {
   return (
-    <Anchor style={{ textDecoration: "none" }} href={`/detail/${id}`} {...rest}>
+    <Anchor
+      style={{ textDecoration: "none", color: "black" }}
+      href={`/detail/${id}`}
+      {...rest}
+    >
       <Flex
         bg="#D0EBFF"
         mx={10}
@@ -28,6 +32,7 @@ const Restoran = ({
         style={{ borderRadius: "20px" }}
         align="center"
         justify="space-between"
+        gap={10}
       >
         <Flex
           bg="#E7F5FF"

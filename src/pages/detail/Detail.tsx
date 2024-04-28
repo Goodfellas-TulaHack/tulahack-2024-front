@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Loader, ScrollArea, Text } from "@mantine/core";
+import { Flex, Loader, ScrollArea } from "@mantine/core";
 import { useParams } from "react-router";
 import { useGetOneRestoran } from "@/api/restoran/getOneRestoran";
 import DetailCarousel from "@/components/DetailCarousel";
@@ -7,12 +7,14 @@ import DetailTab, { Tab } from "./DetailTab";
 import DetaiHeaderlInfo from "./DetaiHeaderlInfo";
 import Description from "./Description";
 import Booking from "./Booking";
+import { useGetListKitchen } from "@/api/kitchen/kitchen.api";
 
 const Detail = () => {
   type dataId = {
     id: string;
   };
   const id = useParams<dataId>();
+  const { data: kitchen } = useGetListKitchen();
 
   const { data, isFetched } = useGetOneRestoran({ id: id.id ?? "" });
   const [tab, setTab] = useState(Tab.Info);
@@ -31,7 +33,7 @@ const Detail = () => {
         <DetailCarousel photo={data?.photos ?? [""]} />
         <DetaiHeaderlInfo
           title={data?.title}
-          kitchen={data?.kitchen}
+          kitchen={kitchen?.find((elem) => elem.id === data?.kitchen)?.name}
           raiting={data?.raiting}
           address={data?.address}
         />
