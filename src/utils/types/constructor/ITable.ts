@@ -9,7 +9,7 @@ interface ITable {
     fill: string,
     scaleY?: number,
     scaleX?: number,
-    rotate?: number,
+    rotation?: number,
     numberOfPeople: number
     radius?: number
 }
