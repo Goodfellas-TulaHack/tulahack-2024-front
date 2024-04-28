@@ -45,7 +45,7 @@ const Detail = () => {
             endWorkTime={data?.endWorkTime}
           />
         ) : (
-          <Booking />
+          <Booking schemeId={data?.schemeId ?? ""} />
         )}
       </Flex>
     </ScrollArea>

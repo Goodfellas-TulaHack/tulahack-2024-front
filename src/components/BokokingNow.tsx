@@ -2,6 +2,7 @@ import { Box, Flex, BoxProps, Text, Button } from "@mantine/core";
 
 import { IconCarambola, IconHome } from "@tabler/icons-react";
 import ModalMenuButton from "./ModalMenuButton";
+import { usePutNotification } from "@/api/notification/putNotification";
 
 type BokokingNowProps = BoxProps & {};
 
