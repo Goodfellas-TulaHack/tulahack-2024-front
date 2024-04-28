@@ -38,6 +38,8 @@ const Restoran = ({
           align="center"
           justify="space-between"
           gap={10}
+          //@ts-ignore
+          onClick={onClick}
         >
           <Flex gap={20} align="center">
             <Flex

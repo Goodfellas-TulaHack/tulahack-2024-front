@@ -1,36 +1,36 @@
 import { instance } from "@api/api.ts";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { IKitchenData } from "@/utils/types/kitchen/IKitchenData.ts";
 
 export type PutNotification = {
-  id_user: string;
-  id_restoran: string;
+  userId: string;
+  restaurantId: string;
   type: string;
   description: string;
 };
 
-export const putNotification = async ({
-  id_user,
-  id_restoran,
+export const postNotification = async ({
+  userId,
+  restaurantId,
   type,
   description,
 }: PutNotification) => {
-  instance.put<IKitchenData[]>(`/Notification/${id_user}`, {
-    id_user,
-    id_restoran,
+  instance.post<IKitchenData[]>(`/Notification`, {
+    userId,
+    restaurantId,
     type,
     description,
   });
 };
 
 export const usePutNotification = ({
-  id_user,
-  id_restoran,
+  userId,
+  restaurantId,
   type,
   description,
 }: PutNotification) => {
   return useMutation({
     mutationFn: () =>
-      putNotification({ id_user, id_restoran, type, description }),
+      postNotification({ userId, restaurantId, type, description }),
   });
 };
