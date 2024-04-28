@@ -2,13 +2,13 @@ import Restoran from "@/components/Restoran.tsx";
 import {Button, Flex, ScrollArea, Tabs} from "@mantine/core";
 import {useMobileQuery} from "@/components/media.tsx";
 import {IconCirclePlus} from "@tabler/icons-react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import RestrauntEditCreate from "@/components/restrauntEditor/restraunt.edit.create.tsx";
 import {getListAdminRest, getOneRestoranAdmin} from "@api/admin/admin.restraunt.api.ts";
 import RestrauntEditScheme from "@/components/restrauntEditor/restraunt.edit.scheme.tsx";
 import {useUserId} from "@/utils/hooks/useUserId.ts";
 import RestrauntEditPhotos from "@/components/restrauntEditor/restraunt.edit.photos.tsx";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getOneRestoran, useGetOneRestoran} from "@api/restoran/getOneRestoran.ts";
 import RestrauntEditMenu from "@/components/restrauntEditor/restraunt.edit.menu.tsx";
 
@@ -23,7 +23,7 @@ const restrauntEdit = () => {
         queryKey: ["getListRestraunAdmin", userId],
         queryFn: () => getListAdminRest(userId)})
 
-
+    const queryClient = useQueryClient();
 
     const [restId, setRestId] = useState<string | null>(null)
 
@@ -33,6 +33,10 @@ const restrauntEdit = () => {
         queryKey: ["getListRestoran", restId],
         queryFn: () => getOneRestoranAdmin(restId ? restId : ''),
     });
+
+    useEffect(() => {
+        queryClient.invalidateQueries({queryKey:['menu','tables']})
+    }, [restId]);
 
     return(
         <Flex w={"100dvw"}>

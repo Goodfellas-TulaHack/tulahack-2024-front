@@ -28,7 +28,7 @@ const RestrauntEditMenu = (props: {restId: string}) => {
             queryClient.invalidateQueries({ queryKey: ['menu'] })
         }
     })
-    useEffect(() =>data && setMenu(data.data), [data])
+    useEffect(() =>data && setMenu(data.data), [data,props.restId])
 
     return(
             <Flex direction={"column"} gap={20}>
