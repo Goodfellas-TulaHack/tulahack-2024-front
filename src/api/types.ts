@@ -1,4 +1,14 @@
 export type FilterRestoran = FilterRestoranResponse;
+
+export type SearchRestoranResponse = {
+  id: string;
+  title: string;
+  subtitle: string;
+  address: string;
+  kitchen: string;
+  raiting: number;
+};
+
 export type FilterRestoranResponse = {
   id: string;
   title: string;

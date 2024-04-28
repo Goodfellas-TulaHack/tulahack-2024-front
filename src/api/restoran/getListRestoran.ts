@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { instance } from "../api";
-import { FilterRestoranResponse } from "../types";
+import { SearchRestoranResponse } from "../types";
 
 export type FilterRestoran = {
   title: string;
@@ -8,8 +8,9 @@ export type FilterRestoran = {
 };
 
 export const getListRestoran = async ({
-  title,kitchenIds,
-}: FilterRestoran): Promise<FilterRestoranResponse[]> => {
+  title,
+  kitchenIds,
+}: FilterRestoran): Promise<SearchRestoranResponse[]> => {
   const { data } = await instance.post(`/Restaurant/Search`, {
     title,
     kitchenIds,

@@ -12,14 +12,17 @@ import { IconSearch } from "@tabler/icons-react";
 import Restoran from "@/components/Restoran";
 import Header from "@/components/Header";
 import { useGetListRestoran } from "@/api/restoran/getListRestoran";
+import { useGetListKitchen } from "@/api/kitchen/kitchen.api";
 
 const Main = () => {
   const [search, setSearch] = useState("");
 
-  const { data, isLoading } = useGetListRestoran({
+  const { data: restoran, isLoading } = useGetListRestoran({
     title: search,
-      kitchenIds: [],
+    kitchenIds: [],
   });
+
+  const { data: kitchenResp } = useGetListKitchen();
 
   return (
     <Flex direction="column" gap="md">
@@ -50,7 +53,7 @@ const Main = () => {
         px={10}
         size="md"
         placeholder="Выберите кухню"
-        data={["Суши", "Пицца", "Бургеры"]}
+        data={kitchenResp?.map((elem) => elem.name)}
       />
 
       {isLoading ? (
@@ -58,9 +61,9 @@ const Main = () => {
           <Loader color="cyan" />
         </Flex>
       ) : (
-        <ScrollArea h="70vh">
+        <ScrollArea h="50vh">
           <Flex gap="sm" direction="column">
-            {data?.map((elem) => (
+            {restoran?.map((elem) => (
               <Restoran
                 key={elem.id}
                 title={elem.title}
