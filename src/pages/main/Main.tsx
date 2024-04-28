@@ -16,13 +16,19 @@ import { useGetListKitchen } from "@/api/kitchen/kitchen.api";
 
 const Main = () => {
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
+  const { data: kitchenResp } = useGetListKitchen();
 
   const { data: restoran, isLoading } = useGetListRestoran({
     title: search,
-    kitchenIds: [],
+    //@ts-ignore
+    kitchenIds:
+      kitchenResp && filter !== ""
+        ? [kitchenResp?.find((elem) => elem.name == filter)?.id]
+        : [],
   });
 
-  const { data: kitchenResp } = useGetListKitchen();
+  console.log(kitchenResp?.find((elem) => elem.name == filter)?.id);
 
   return (
     <Flex direction="column" gap="md">
@@ -50,6 +56,7 @@ const Main = () => {
       />
 
       <Select
+        onChange={(value) => setFilter(value ?? "")}
         px={10}
         size="md"
         placeholder="Выберите кухню"
