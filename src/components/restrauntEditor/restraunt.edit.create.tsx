@@ -3,7 +3,7 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {TimeInput} from "@mantine/dates";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 
-import {postNewRest} from "@api/admin/admin.restraunt.api.ts";
+import {postNewRest, putNewRest} from "@api/admin/admin.restraunt.api.ts";
 import {useUserId} from "@/utils/hooks/useUserId.ts";
 import {useGetListKitchen} from "@api/kitchen/kitchen.api.ts";
 import {IKitchenData} from "@/utils/types/kitchen/IKitchenData.ts";
@@ -12,14 +12,14 @@ import '@mantine/dropzone/styles.css';
 import {Dropzone, FileWithPath, IMAGE_MIME_TYPE} from "@mantine/dropzone";
 import {IconPhoto, IconUpload, IconX} from "@tabler/icons-react";
 
-const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>, restId?: string | null}) => {
-    const [title, setTitle] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [shortDescription, setShortDescription] = useState<string>("");
-    const [address, setAddress] = useState<string>("");
-    const [startTime, setStartTime] = useState<string>("");
-    const [endTime, setEndTime] = useState<string>("");
-    const [kitchen, setKitchen] = useState<string[]>([]);
+const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>, restData?: IRestData}) => {
+    const [title, setTitle] = useState<string>(props.restData?.title ? props.restData.title : "");
+    const [description, setDescription] = useState<string>(props.restData?.description ? props.restData.description : "");
+    const [shortDescription, setShortDescription] = useState<string>(props.restData?.subtitle ? props.restData.subtitle : "");
+    const [address, setAddress] = useState<string>(props.restData?.address ? props.restData.address : "");
+    const [startTime, setStartTime] = useState<string>(props.restData?.startWorkTime ? props.restData.startWorkTime : "");
+    const [endTime, setEndTime] = useState<string>(props.restData?.endWorkTime ? props.restData.endWorkTime : "");
+    const [kitchen, setKitchen] = useState<string[]>(props.restData?.kitchen ? props.restData.kitchen : []);
     const [logo, setLogo] = useState<FileWithPath[]>();
 
 
@@ -31,6 +31,13 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
 
     const addRestMutation = useMutation({
         mutationFn: (data: IRestData) => postNewRest(data),
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ['getListRestraunAdmin'] })
+        }
+    })
+
+    const addRestMutationPut = useMutation({
+        mutationFn: (data: IRestData) => putNewRest(data),
         onSuccess: async () => {
             queryClient.invalidateQueries({ queryKey: ['getListRestraunAdmin'] })
         }
@@ -51,6 +58,7 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
         // }
 
         const newRest: IRestData = {
+            id: props.restData ? props.restData.id : undefined,
             title: title,
             description: description,
             subtitle: shortDescription,
@@ -61,7 +69,8 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
             kitchen: kitchen
         }
 
-        addRestMutation.mutate(newRest)
+        props.restData ? addRestMutationPut.mutate(newRest) : addRestMutation.mutate(newRest)
+
     }
 
     const {data} = useGetListKitchen()
@@ -72,6 +81,16 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
         }
     },[data])
 
+    useEffect(() => {
+        setTitle(props.restData?.title ? props.restData.title : "");
+        setDescription(props.restData?.description ? props.restData.description : "");
+        setShortDescription(props.restData?.subtitle ? props.restData.subtitle : "")
+        setAddress(props.restData?.address ? props.restData.address : "")
+        setStartTime(props.restData?.startWorkTime ? props.restData.startWorkTime : "")
+        setEndTime(props.restData?.endWorkTime ? props.restData.endWorkTime : "")
+        setKitchen(props.restData?.kitchen ? props.restData.kitchen : [])
+    }, [props.restData]);
+
     const previews = logo?.map((logo) => {
         const imageUrl = URL.createObjectURL(logo);
         return <Image src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
@@ -79,7 +98,7 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
 
     return(
         <Flex p={50} direction="column" gap={50}>
-            <Text fw={800} size={"48px"}>{props.restId ? 'Старый ресторан' : 'Новый ресторан'}</Text>
+            <Text fw={800} size={"48px"}>{props.restData?.title ? props.restData?.title : 'Новый ресторан'}</Text>
             <SimpleGrid cols={2}>
                 <Flex direction={"column"} gap={20}>
                     <Text fw={700} size={"24px"}>
@@ -172,7 +191,7 @@ const restrauntEditCreate = (props: {setIsNew: Dispatch<SetStateAction<boolean>>
                 {previews}
                 <Flex direction={"column"} gap={20}>
                     <Button onClick={() => saveHandler()} fullWidth>Сохранить</Button>
-                    {!props.restId && <Button onClick={() => props.setIsNew(false)} color="gray" fullWidth>Отменить</Button>}
+                    {!props.restData && <Button onClick={() => props.setIsNew(false)} color="gray" fullWidth>Отменить</Button>}
                 </Flex>
 
             </SimpleGrid>

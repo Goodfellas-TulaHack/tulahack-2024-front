@@ -3,7 +3,8 @@ import {Button, Flex, Input, Select} from "@mantine/core";
 import {useRef, useState} from "react";
 import Konva from "konva";
 import {IconTrash} from "@tabler/icons-react";
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {postNewRest} from "@api/admin/admin.restraunt.api.ts";
 import {postNewTableFn} from "@api/admin/admin.restraunt.scheme.save.ts";
 
 
@@ -20,6 +21,17 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
 
     const stageRef = useRef<Konva.Stage | null>(null);
     const transformerRef = useRef<Konva.Transformer | null>(null);
+
+    const queryClient = useQueryClient();
+
+    const addTableMutatuion = useMutation({
+        mutationFn: (data: ITable) => postNewTableFn(data),
+        onSuccess: async () => {
+        queryClient.invalidateQueries({ queryKey: ['getListRestraunAdmin'] })
+    }}
+    )
+
+
     const addTable = () => {
         const newTable: ITable = {
             id: crypto.randomUUID(),
@@ -36,7 +48,7 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
             numberOfPeople: 0,
             radius: 25
         }
-
+        addTableMutatuion.mutate(newTable)
         setTable((prev) => [...prev, newTable]);
     }
 
