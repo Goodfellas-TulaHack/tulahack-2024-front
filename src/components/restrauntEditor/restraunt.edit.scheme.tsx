@@ -4,7 +4,7 @@ import {useEffect, useRef, useState} from "react";
 import Konva from "konva";
 import {IconTrash} from "@tabler/icons-react";
 import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
-import {getAllTableFn, postNewTableFn, putNewTableFn} from "@api/admin/admin.restraunt.scheme.save.ts";
+import {deleteTableFn, getAllTableFn, postNewTableFn, putNewTableFn} from "@api/admin/admin.restraunt.scheme.save.ts";
 
 
 
@@ -15,7 +15,8 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
 
     const [tables, setTable] = useState<ITable[]>([]);
 
-    const [selectId, setSelectId] = useState<number>(0);
+    const [selectId, setSelectId] = useState<string>('');
+    const [selectIdinArray, setSelectIdinArray] = useState<number>(0);
     const [isSelected, setIsSelected] = useState<boolean>(false);
 
     const stageRef = useRef<Konva.Stage | null>(null);
@@ -25,7 +26,7 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
 
     const {data} = useQuery({
         queryFn: () => getAllTableFn(props.schemeId),
-        queryKey: ['tables']
+        queryKey: ['tables', props.schemeId]
 
     })
 
@@ -38,6 +39,13 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
 
     const putTableMutatuion = useMutation({
         mutationFn: (data: ITable) => putNewTableFn(data),
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ['tables'] })
+        }}
+    )
+
+    const deleteTableMutation = useMutation({
+        mutationFn: (id: string) => deleteTableFn(id),
         onSuccess: async () => {
             queryClient.invalidateQueries({ queryKey: ['tables'] })
         }}
@@ -92,9 +100,8 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
     }
 
     const deleteHandler = () => {
-        const newTables: ITable[] = [...tables.slice(0,selectId),...tables.slice(selectId+1, tables.length)];
+        deleteTableMutation.mutate(selectId)
         setIsSelected(false)
-        setTable(newTables);
     }
 
     return(
@@ -107,7 +114,7 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
                     data={['Квадратный стол','Круглый стол']}
                 />
                 <Button onClick={() => {addTable()}}>Добавить стол</Button>
-                {isSelected && <Input value={tables[selectId].numberOfPeople} placeholder={"Вместитмость"} type={"number"} onChange={(e) => saveTable(tables[selectId], selectId, parseInt(e.target.value))}/>}
+                {isSelected && <Input value={tables[selectIdinArray].numberOfPeople} placeholder={"Вместитмость"} type={"number"} onChange={(e) => saveTable(tables[selectIdinArray], selectIdinArray, parseInt(e.target.value))}/>}
                 {isSelected && <Button color={"red"} onClick={() => deleteHandler()}><IconTrash/></Button>}
             </Flex>
             <Stage
@@ -133,7 +140,7 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
                                 onMouseDown={e => transformerRef.current.nodes([e.currentTarget])}
                                 //@ts-ignore
                                 onDragEnd={e => saveTable(e.currentTarget.attrs, i)}
-                                onClick={() => {setSelectId(i), setIsSelected(true)}}
+                                onClick={() => {setSelectId(table.id), setIsSelected(true), setSelectIdinArray(i)}}
                                 onTransformEnd={e => saveTable(e.currentTarget.attrs, i)}
 
                                 cornerRadius={5}
@@ -146,7 +153,7 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
                                 y={table.y}
                                 scaleX={table.scaleX}
                                 scaleY={table.scaleY}
-                                rotation={table.rotate}
+                                rotation={table.rotation}
                                 fill={table.fill}
                                 key={table.id}
                                 radius={table.radius}
@@ -155,14 +162,13 @@ const restrauntEditorSchema = (props: {schemeId: string}) => {
                                 onMouseDown={e => transformerRef.current.nodes([e.currentTarget])}
                                 //@ts-ignore
                                 onDragEnd={e => saveTable(e.currentTarget.attrs, i)}
-                                onClick={() => {setSelectId(i), setIsSelected(true)}}
+                                onClick={() => {setSelectId(table.id), setIsSelected(true), setSelectIdinArray(i)}}
                                 onTransformEnd={e => saveTable(e.currentTarget.attrs, i)}
                             />
                     ))}
                     <Transformer ref={transformerRef} />
                 </Layer>
             </Stage>
-            <Button onClick={() => saveTablesHandler()}>Сохранить</Button>
         </>
 
 

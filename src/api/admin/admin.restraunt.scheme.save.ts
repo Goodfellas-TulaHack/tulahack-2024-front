@@ -11,3 +11,7 @@ export const postNewTableFn = async (dataTable: ITable) => {
 export const putNewTableFn = async (dataTable: ITable) => {
     await instance.put(`/Table/`+dataTable.id, dataTable)
 };
+
+export const deleteTableFn = async (id: string) => {
+    await instance.delete(`/Table/`+id)
+}
