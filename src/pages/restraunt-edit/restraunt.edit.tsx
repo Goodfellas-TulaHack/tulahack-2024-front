@@ -1,16 +1,16 @@
 import Restoran from "@/components/Restoran.tsx";
 import {Button, Flex, ScrollArea, Tabs} from "@mantine/core";
 import {useMobileQuery} from "@/components/media.tsx";
-import {IconCirclePlus, IconPhoto} from "@tabler/icons-react";
+import {IconCirclePlus} from "@tabler/icons-react";
 import {useState} from "react";
 import RestrauntEditCreate from "@/components/restrauntEditor/restraunt.edit.create.tsx";
-import {useGetListRestoran} from "@api/restoran/getListRestoran.ts";
-import {useGetListAdminRestoran} from "@api/admin/admin.restraunt.api.ts";
-import restrauntEditScheme from "@/components/restrauntEditor/restraunt.edit.scheme.tsx";
+import {getListAdminRest, getOneRestoranAdmin} from "@api/admin/admin.restraunt.api.ts";
 import RestrauntEditScheme from "@/components/restrauntEditor/restraunt.edit.scheme.tsx";
 import {useUserId} from "@/utils/hooks/useUserId.ts";
-import restrauntEditCreate from "@/components/restrauntEditor/restraunt.edit.create.tsx";
 import RestrauntEditPhotos from "@/components/restrauntEditor/restraunt.edit.photos.tsx";
+import {useQuery} from "@tanstack/react-query";
+import {getOneRestoran, useGetOneRestoran} from "@api/restoran/getOneRestoran.ts";
+import RestrauntEditMenu from "@/components/restrauntEditor/restraunt.edit.menu.tsx";
 
 
 const restrauntEdit = () => {
@@ -19,13 +19,20 @@ const restrauntEdit = () => {
     const [isCreate, setIsCreate] = useState<boolean>(false);
     const userId = useUserId();
 
-    const {data, isLoading} = useGetListAdminRestoran(userId);
+    const {data, isLoading} = useQuery({
+        queryKey: ["getListRestraunAdmin", userId],
+        queryFn: () => getListAdminRest(userId)})
+
+
 
     const [restId, setRestId] = useState<string | null>(null)
 
-    const [tab, setTab] = useState<string>('Схема');
+    const [tab, setTab] = useState<string>('Домашняя страница');
 
-
+    const {data: restData} = useQuery({
+        queryKey: ["getListRestoran", restId],
+        queryFn: () => getOneRestoranAdmin(restId ? restId : ''),
+    });
 
     return(
         <Flex w={"100dvw"}>
@@ -41,6 +48,9 @@ const restrauntEdit = () => {
                                       subtitle={item.subtitle}
                                       address={item.address}
                                       raiting={item.raiting ? item.raiting : 0}
+                                      isSelectable={true}
+                                      isSelected={item.id === restId}
+                                      onClick={() => setRestId(item.id ? item.id : null)}
                                       id={item.id ? item.id : ''}/>
                         ))}
                     </Flex>
@@ -51,7 +61,7 @@ const restrauntEdit = () => {
             <Flex direction={"column"} p={30}>
                 {restId &&
                 <>
-                    <Tabs value={tab} onChange={(e) => setTab(e ? e : '')} w={"calc(100dvw - 550px)"} defaultValue="Схема">
+                    <Tabs value={tab} onChange={(e) => setTab(e ? e : '')} w={"calc(100dvw - 550px)"}>
                         <Tabs.List grow>
                             <Tabs.Tab value="Домашняя страница" >
                                 Домашняя страница
@@ -72,14 +82,17 @@ const restrauntEdit = () => {
                     </Tabs>
                     <Flex mt={20} gap={20} direction="column" align={"center"} justify={"center"}>
                         {tab === "Схема" &&
-                            <RestrauntEditScheme/>
+                            <RestrauntEditScheme schemeId={restData?.schemeId ? restData.schemeId : ''}/>
                         }
                         {tab === "Описание" &&
-                            <RestrauntEditCreate setIsNew={setIsCreate} restId={restId} />
+                            <RestrauntEditCreate setIsNew={setIsCreate} restData={restData} />
                         }
                         {tab === 'Галлерея' &&
                             <RestrauntEditPhotos />
 
+                        }
+                        {tab === 'Меню' &&
+                            <RestrauntEditMenu restId={restId}/>
                         }
                     </Flex>
                 </>
