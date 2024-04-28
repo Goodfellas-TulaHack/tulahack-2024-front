@@ -10,7 +10,6 @@ import {addBooking, getListBooking} from "@api/booking/booking.api.ts";
 import {IBooking} from "@/utils/types/booking/IBooking.ts";
 import {useNavigate} from "react-router";
 import {useUserId} from "@/utils/hooks/useUserId.ts";
-import dayjs = require("dayjs");
 type BookingProps = BoxProps & {
   schemeId: string;
   restId: string
@@ -81,7 +80,7 @@ const Booking = ({ schemeId, restId }: BookingProps) => {
       userId,
       restrauntId: restId,
       tabelId: tableId,
-      date: value ? dayjs(value).format("DD-MM-YYYY") : '',
+      date: value ? value.toISOString() : '',
       startTime: startTime,
       endTime: endTime,
       personNumber: count,
